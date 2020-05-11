@@ -1,0 +1,30 @@
+repos:
+-   repo: local
+    hooks:
+    -   id: py3
+        name: py3
+        language: python
+        language_version: python3
+        entry: python --version
+        verbose: true
+        pass_filenames: false
+        always_run: true
+    -   id: pylint
+        name: pylint
+        entry: pylint
+        language: system
+        types: [python]
+-   repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v2.5.0
+    hooks:
+    -   id: check-yaml
+    -   id: end-of-file-fixer
+    -   id: trailing-whitespace
+-   repo: https://github.com/psf/black
+    rev: 19.10b0
+    hooks:
+    -   id: black
+-   repo: https://gitlab.com/pycqa/flake8
+    rev: 3.8.0a2  # pick a git hash / tag to point to
+    hooks:
+    -   id: flake8
