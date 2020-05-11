@@ -14,7 +14,7 @@ class kraken_handler(object):
 
         self.trades = {}
 
-    def pullTrades(self):
+    def pull_trades(self):
         for i in range(1, 11):
             start_date = datetime.datetime(2020, i + 1, 1)
             end_date = datetime.datetime(2020, i + 2, 30)
@@ -22,9 +22,9 @@ class kraken_handler(object):
                 "TradesHistory", self.__date(start_date, end_date, 1)
             )
             time.sleep(0.25)
-            self.trades.update(req_history)
+            self.trades.update(req_history["result"]["trades"])
 
-    def getTrades(self):
+    def get_trades(self):
         return self.trades
 
     # takes date and returns nix time
