@@ -1,5 +1,6 @@
 import kraken_handler
 import pickle
+import trades_handler
 import trades_parser
 
 
@@ -20,8 +21,11 @@ PARSING TRADES
 """
 parser = trades_parser.trades_parser(trades_history)
 eth_trades = parser.get_trades_for("XETHZEUR")
-print(eth_trades)
 
 """
 ANALYZING TRADES
 """
+trades_analyzer = trades_handler.trades_handler(eth_trades)
+buy, sell = trades_analyzer.get_buy_and_host_costs()
+print("BUY: " + str(buy))
+print("SELL: " + str(sell))
