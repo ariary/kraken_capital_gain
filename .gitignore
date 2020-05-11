@@ -1,2 +1,3 @@
 kraken.key
-./pickles/*
+/pickles/*
+/__pycache__
