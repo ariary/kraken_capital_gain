@@ -1,6 +1,5 @@
 import datetime
 import calendar
-import time
 import krakenex
 
 
@@ -11,18 +10,22 @@ class KrakenHandler:
         self.kraken_api = krakenex.API()
         self.kraken_api.load_key(key_path)
 
-        self.trades = {}
-
-    def pull_trades(self):
+    def pull_trades_from_to(self, start, end):
         """retrieve your own kraken trades using krakenex"""
-        for i in range(1, 11):
-            start_date = datetime.datetime(2020, i + 1, 1)
-            end_date = datetime.datetime(2020, i + 2, 30)
-            req_history = self.kraken_api.query_private(
-                "TradesHistory", self.__date(start_date, end_date, 1)
-            )
-            time.sleep(0.25)
-            self.trades.update(req_history["result"]["trades"])
+        req_history = self.kraken_api.query_private(
+            "TradesHistory", self.__date(start, end, 1)
+        )
+        return req_history["result"]["trades"]
+
+    def pull_trades_from(self, start):
+        """pull trades from a starting point to now"""
+        now = datetime.datetime.now()
+        return self.pull_trades_from_to(start, now)
+
+    def pull_trades_to(self, end):
+        """pull trades until a specfic date """
+        start = datetime.datetime(2017, 8, 1)  # from August 2017
+        return self.pull_trades_from_to(start, end)
 
     def get_trades(self):
         """get the trades"""
