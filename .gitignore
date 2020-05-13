@@ -1,3 +1,4 @@
 kraken.key
 /pickles/*
 /__pycache__
+/.vscode/
