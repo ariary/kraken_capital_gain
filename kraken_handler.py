@@ -27,9 +27,21 @@ class KrakenHandler:
         start = datetime.datetime(2017, 8, 1)  # from August 2017
         return self.pull_trades_from_to(start, end)
 
-    def get_trades(self):
-        """get the trades"""
-        return self.trades
+    def pull_trades_last_year(self):
+        """ return all trades from last year"""
+        return self.__pull_timedelta(days=365)
+
+    def pull_trades_last_month(self):
+        """ return all trades from last year"""
+        return self.__pull_timedelta(days=31)
+
+    def pull_trades_last_day(self):
+        """ return all trades from the last 24 hours"""
+        return self.__pull_timedelta(hours=24)
+
+    def pull_trades_last_hour(self):
+        """ return all trades from last hour"""
+        return self.__pull_timedelta(hours=1)
 
     def __date_nix(self, str_date):
         return calendar.timegm(str_date.timetuple())
@@ -46,3 +58,13 @@ class KrakenHandler:
             "ofs": str(ofs),
         }
         return req_data
+
+    def __pull_timedelta(self, **args):
+        """ pull the trades with a specified delta from now
+        Call @datetime.timedelta()
+        Available delta are thus the same as time delta:
+        timedelta(days=0, seconds=0, microseconds=0, milliseconds=0, minutes=0, hours=0, weeks=0)
+        """
+        now = datetime.datetime.now()
+        delta = now - datetime.timedelta(**args)
+        return self.pull_trades_from_to(delta, now)
