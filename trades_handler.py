@@ -21,14 +21,16 @@ class TradesHandler:
 
     def get_buy_and_sell_costs(self, trades):
         """Retrieve the money spend to buy a currency, and the money received when selling it"""
-        buy_cost = 0
-        sell_cost = 0
 
-        for _, trade in trades.items():
-            if trade["type"] == "buy":
-                buy_cost += float(trade["cost"])
-            else:
-                sell_cost += float(trade["cost"])
+        # Search Margin trade position to ignore the trades used to close this position
+        buy_cost, sell_cost, blacklist = self.__search_margin_position(trades)
+
+        for id, trade in trades.items():
+            if id not in blacklist:  # Not a margin position
+                if trade["type"] == "buy":
+                    buy_cost += float(trade["cost"])
+                else:
+                    sell_cost += float(trade["cost"])
 
         return buy_cost, sell_cost
 
@@ -40,7 +42,6 @@ class TradesHandler:
         """
         Do the same job as get_buy_and_host_costs for all currencies traded
         TODO: Check if set is empty
-        TODO: Find a right substraction
         """
         result = {}
         result_buy = 0
@@ -63,3 +64,29 @@ class TradesHandler:
 
     def get_trades(self):
         return self.trades_dict
+
+    def __search_margin_position(self, trades):
+        """
+        Search the margin positions in the dictionnary trades
+        Update the Buy/Sell costs accordingly
+        Update a list of trades involved in the margin position
+        """
+        buy_cost = 0
+        sell_cost = 0
+        blacklist = []
+
+        for id, trade in trades.items():
+            if "trades" in trade.keys():
+                # update list of trades involved in the position
+                for close_trade in trade.get("trades"):
+                    blacklist.append(close_trade)
+                blacklist.append(id)
+
+                # update buy/sell costs
+                if trade["type"] == "buy":
+                    buy_cost += float(trade["cost"])
+                    sell_cost += float(trade["ccost"])
+                else:
+                    buy_cost += float(trade["ccost"])
+                    sell_cost += float(trade["cost"])
+        return buy_cost, sell_cost, blacklist

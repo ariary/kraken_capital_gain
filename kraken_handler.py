@@ -60,9 +60,10 @@ class KrakenHandler:
         return req_data
 
     def __pull_timedelta(self, **args):
-        """ pull the trades with a specified delta from now
+        """
+        Pull the trades with a specified delta from now
         Call @datetime.timedelta()
-        Available delta are thus the same as time delta:
+        Available delta are thus the same as timedelta:
         timedelta(days=0, seconds=0, microseconds=0, milliseconds=0, minutes=0, hours=0, weeks=0)
         """
         now = datetime.datetime.now()
