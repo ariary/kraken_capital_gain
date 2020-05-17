@@ -1,6 +1,6 @@
 # Kraken Capital Gain
 ## Description
-This repo is used to know ***your capital gain using Kraken***. You can play with different parameter, e.g you can have an overview of your capital gain for a specific currency or for a specific timeframe
+This repo is used to know ***your capital gain using Kraken***. You can play with different parameters, e.g you can have an overview of your capital gain for a specific currency or for a specific timeframe
 
 ## Requirement
 
