@@ -16,6 +16,10 @@ if len(sys.argv) < 2:
     )
     sys.exit(1)
 else:
+    print(
+        " DISCLAIMER: print only result for trade (ie positions).\
+        Also if you have not closed the position the amount of the position is considered as a loss"
+    )
     # RETRIEVING TRADES
     history = {}
 
