@@ -10,40 +10,40 @@ class KrakenHandler:
         self.kraken_api = krakenex.API()
         self.kraken_api.load_key(key_path)
 
-    def pull_trades_from_to(self, start, end):
-        """retrieve your own kraken trades using krakenex"""
+    def pull_orders_from_to(self, start, end):
+        """retrieve your own kraken closed orders using krakenex"""
         req_history = self.kraken_api.query_private(
-            "TradesHistory", self.__date(start, end, 1)
+            "ClosedOrders", self.__date(start, end, 1)
         )
-        return req_history["result"]["trades"]
+        return req_history["result"]["closed"]
 
-    def pull_trades_from(self, start):
-        """pull trades from a starting point to now"""
+    def pull_orders_from(self, start):
+        """pull closed orders from a starting point to now"""
         now = datetime.datetime.now()
-        return self.pull_trades_from_to(start, now)
+        return self.pull_order_from_to(start, now)
 
-    def pull_trades_to(self, end):
-        """pull trades until a specfic date """
+    def pull_orders_to(self, end):
+        """pull closed orders until a specfic date """
         start = datetime.datetime(2017, 8, 1)  # from August 2017
-        return self.pull_trades_from_to(start, end)
+        return self.pull_orders_from_to(start, end)
 
-    def pull_trades_last_year(self):
-        """ return all trades from last year"""
+    def pull_orders_last_year(self):
+        """ return all closed orders from last year"""
         return self.__pull_timedelta(days=365)
 
-    def pull_trades_last_month(self):
-        """ return all trades from last year"""
+    def pull_orders_last_month(self):
+        """ return all closed orders from last year"""
         return self.__pull_timedelta(days=31)
 
-    def pull_trades_last_day(self):
-        """ return all trades from the last 24 hours"""
+    def pull_orders_last_day(self):
+        """ return all closed orders from the last 24 hours"""
         return self.__pull_timedelta(hours=24)
 
-    def pull_trades_last_hour(self):
-        """ return all trades from last hour"""
+    def pull_orders_last_hour(self):
+        """ return all  closed orders from last hour"""
         return self.__pull_timedelta(hours=1)
 
-    def get_open_orders(self):
+    def get_open_positions(self):
         """ use the Kraken API to retrieve the open positions """
         req_data = {"docalcs": "true"}
         req_history = self.kraken_api.query_private("OpenPositions", req_data)
@@ -58,7 +58,7 @@ class KrakenHandler:
     def __date(self, start, end, ofs):
         req_data = {
             "type": "all",
-            "trades": "true",
+            "trades": "false",
             "start": str(self.__date_nix(start)),
             "end": str(self.__date_nix(end)),
             "ofs": str(ofs),
@@ -67,11 +67,11 @@ class KrakenHandler:
 
     def __pull_timedelta(self, **args):
         """
-        Pull the trades with a specified delta from now
+        Pull the closed orders with a specified delta from now
         Call @datetime.timedelta()
         Available delta are thus the same as timedelta:
         timedelta(days=0, seconds=0, microseconds=0, milliseconds=0, minutes=0, hours=0, weeks=0)
         """
         now = datetime.datetime.now()
         delta = now - datetime.timedelta(**args)
-        return self.pull_trades_from_to(delta, now)
+        return self.pull_orders_from_to(delta, now)

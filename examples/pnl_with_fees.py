@@ -13,7 +13,7 @@ TAKER_FEE = 0.0026
 
 # Retrieve open position
 krakenAPI = kraken_handler.KrakenHandler("../kraken.key")
-open_positions = krakenAPI.get_open_orders()
+open_positions = krakenAPI.get_open_positions()
 for _, order in open_positions["result"].items():
     coin = order["pair"]
     print("For " + coin + ":")

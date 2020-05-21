@@ -7,7 +7,7 @@ currentdir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentfram
 parentdir = os.path.dirname(currentdir)
 sys.path.insert(0, parentdir)
 import kraken_handler
-import trades_handler
+import orders_handler
 
 
 if len(sys.argv) < 2:
@@ -17,23 +17,25 @@ if len(sys.argv) < 2:
     sys.exit(1)
 else:
     print(
-        " DISCLAIMER: print only result for trade (ie positions).\
-        Also if you have not closed the position the amount of the position is considered as a loss"
+        " DISCLAIMER: \n\
+        print only result for closed orders.\n\
+        Also if you have not closed the position the volume of the position is not taking into account\n\
+        For open positions look at pnl_with_fees.py\n"
     )
-    # RETRIEVING TRADES
+    # RETRIEVING CLOSED ORDERS
     history = {}
 
     krakenAPI = kraken_handler.KrakenHandler("../kraken.key")
-    history.update(krakenAPI.pull_trades_last_day())
+    history.update(krakenAPI.pull_orders_last_day())
     pickle.dump(history, open("../pickles/last_day.p", "wb"))
 
-    # PARSING TRADES
-    parser = trades_handler.TradesHandler(history)
-    trades = parser.get_trades_for(sys.argv[1])
+    # PARSING ORDERS
+    parser = orders_handler.OrdersHandler(history)
+    orders = parser.get_orders_for(sys.argv[1])
 
-    # ANALYZING TRADES
+    # ANALYZING ORDERS
     print(sys.argv[1] + " Analysis:")
-    buy, sell = parser.get_buy_and_sell_costs(trades)
+    buy, sell = parser.get_buy_and_sell_costs(orders)
     print("BUY: " + str(buy))
     print("SELL: " + str(sell))
     print("BENEFITS:" + str(sell - buy))
