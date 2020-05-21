@@ -43,6 +43,12 @@ class KrakenHandler:
         """ return all trades from last hour"""
         return self.__pull_timedelta(hours=1)
 
+    def get_open_orders(self):
+        """ use the Kraken API to retrieve the open positions """
+        req_data = {"docalcs": "true"}
+        req_history = self.kraken_api.query_private("OpenPositions", req_data)
+        return req_history
+
     def __date_nix(self, str_date):
         return calendar.timegm(str_date.timetuple())
 
