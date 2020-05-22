@@ -5,17 +5,24 @@ This repo is used to know ***your capital gain using Kraken***. You can play wit
 ## Requirement
 
  - Python 3
- - [krakenex](https://github.com/veox/python3-krakenex) (`pip install krakenex`)
+ - [krakenex](https://github.com/veox/python3-krakenex) (`pip install krakenex`, thus you also need pip ;))
+- a kraken APi keys ([https://support.kraken.com/hc/en-us/articles/360022839451-Generate-API-Keys](https://support.kraken.com/hc/en-us/articles/360022839451-Generate-API-Keys))
 
 ## Usage
 
  - `kraken_handler.py`
 The class used for all interactions with the [KrakenAPI](https://www.kraken.com/fr-fr/features/api)
- - `trades_handler.py`
-The class used for all the treatments of the trades recolted with the KrakenAPI
+ - `orders_handler.py`
+The class used for all the treatments of the closed positions recolted with the KrakenAPI
 
+### `examples` directory
 In the directory `examples` you will have a non-exhaustive list of code uses:
-For example if you want the review of your trades for the last 24hours call u `last_day_review_for_specific_currency.py`
+*By review we mean capital gain + volume exchanged*
+ - `last_day_review_for_specific_currency.py`: if you want a review on the last 24h for a specific coin
+ - `last_month.py`: do a review of all the coins trading during the last month
+ - `pnl_with_fees.py` : provide the Profit & loss for open positions including margin fees (opening + rollover) and fee for closing the position, what Kraken does not include in its PNL
+
+
 
 More examples will be added later, in the meantime you can mix the code as you want to match with your use case
 
